@@ -47,6 +47,41 @@ function getDb(customPath) {
     }
   }
 
+  // Seed initial demo data if database is brand new (for deployment and development)
+  if (process.env.NODE_ENV !== 'test') {
+    try {
+      const hallCount = db.prepare('SELECT COUNT(*) AS count FROM halls').get().count;
+      if (hallCount === 0) {
+        const now = new Date().toISOString();
+        
+        // 1. Seed Organiser
+        const orgInfo = db.prepare(`
+          INSERT INTO organisers (name, email, created_at) 
+          VALUES (?, ?, ?)
+        `).run('Abhilash Reddy', 'abhilash@example.com', now);
+        
+        // 2. Seed Halls (HAL-0001 and HAL-0002)
+        const hallStmt = db.prepare(`
+          INSERT INTO halls (code, name, building, created_at, updated_at) 
+          VALUES (?, ?, ?, ?, ?)
+        `);
+        const h1 = hallStmt.run('HAL-0001', 'Main Seminar Hall', 'Block A', now, now);
+        hallStmt.run('HAL-0002', 'Conference Hall', 'Block B', now, now);
+        
+        // Advance sequence tracker
+        db.prepare('UPDATE hall_sequence SET last_number = 2 WHERE id = 1').run();
+        
+        // 3. Seed Booking
+        db.prepare(`
+          INSERT INTO bookings (organiser_id, hall_id, booking_date, created_at) 
+          VALUES (?, ?, ?, ?)
+        `).run(orgInfo.lastInsertRowid, h1.lastInsertRowid, '2026-11-20', now);
+      }
+    } catch {
+      // Ignore if already populated
+    }
+  }
+
   if (!customPath) {
     dbInstance = db;
   }
