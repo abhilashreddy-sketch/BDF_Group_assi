@@ -14,6 +14,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Root Index Endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({
+    message: 'Welcome to EventSpark Hall – Seminar Hall Booking Management System API',
+    assignment: 'Backend Development Fundamentals (BDF)',
+    theme: 'Theme 14 – Seminar Halls',
+    group_id: 'ST-AIDE2A-G14',
+    status: 'online',
+    endpoints: {
+      health: '/health',
+      halls: '/halls',
+      organisers: '/organisers',
+      bookings: '/bookings',
+      booking_details: '/bookings/details'
+    }
+  });
+});
+
 // Health Check Endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
