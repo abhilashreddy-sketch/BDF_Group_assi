@@ -1,0 +1,16 @@
+node_modules/
+.env
+database/eventspark.db
+database/eventspark.db-journal
+database/eventspark.db-wal
+database/eventspark.db-shm
+database/test_*.db
+database/test_*.db-journal
+database/test_*.db-wal
+database/test_*.db-shm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
+.DS_Store
+Thumbs.db
