@@ -17,17 +17,16 @@ app.use(express.json());
 // Root Index Endpoint
 app.get('/', (req, res) => {
   res.status(200).json({
-    message: 'Welcome to EventSpark Hall – Seminar Hall Booking Management System API',
-    assignment: 'Backend Development Fundamentals (BDF)',
-    theme: 'Theme 14 – Seminar Halls',
-    group_id: 'ST-AIDE2A-G14',
-    status: 'online',
+    message: "Welcome to EventSpark Hall API",
+    project: "EventSpark Hall",
+    status: "Running",
+    version: "1.0.0",
     endpoints: {
-      health: '/health',
-      halls: '/halls',
-      organisers: '/organisers',
-      bookings: '/bookings',
-      booking_details: '/bookings/details'
+      health: "/health",
+      halls: "/halls",
+      organisers: "/organisers",
+      bookings: "/bookings",
+      bookingDetails: "/bookings/details"
     }
   });
 });

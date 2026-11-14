@@ -21,6 +21,24 @@ describe('Server & Infrastructure Tests', () => {
     }
   });
 
+  test('GET / returns 200 with JSON welcome response and endpoints', async () => {
+    const res = await request(app).get('/');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      message: "Welcome to EventSpark Hall API",
+      project: "EventSpark Hall",
+      status: "Running",
+      version: "1.0.0",
+      endpoints: {
+        health: "/health",
+        halls: "/halls",
+        organisers: "/organisers",
+        bookings: "/bookings",
+        bookingDetails: "/bookings/details"
+      }
+    });
+  });
+
   test('GET /health returns 200 with service status, timestamp and uptime', async () => {
     const res = await request(app).get('/health');
     expect(res.status).toBe(200);
