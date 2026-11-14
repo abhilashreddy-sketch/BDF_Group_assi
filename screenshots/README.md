@@ -1,63 +1,65 @@
-# Screenshots & Test Output Evidence Folder
+# EventSpark Hall – Live Deployment Screenshots & Evidence
 
 > **Course:** Backend Development Fundamentals (BDF)  
 > **Theme:** 14 – Seminar Halls  
 > **Group ID:** ST-AIDE2A-G14  
-> **Project:** EventSpark Hall  
+> **Live Render URL:** [https://bdf-group-assi-1.onrender.com](https://bdf-group-assi-1.onrender.com)  
 
-This folder (`screenshots/`) is designated for storing all test execution screenshots, API response captures, and validation evidence required for assignment evaluation.
-
----
-
-## 📁 Files Included in this Folder
-
-1. **`test_evidence_report.html`**:  
-   Open this file in your web browser (Chrome, Edge) to view a styled, high-resolution visual report of all 3 twist tests and core endpoints with exact request bodies and responses. You can screenshot or print to PDF.
-
-2. **`test_outputs.json`**:  
-   Programmatic JSON file containing the raw input payloads and response objects from actual test runs.
+This folder contains the verified production screenshots taken directly from our live deployed cloud backend on Render.
 
 ---
 
-## 📸 Checklist of Screenshots to Take & Store Here
+## 📸 Live Deployment Screenshot Gallery
 
-When preparing your submission bundle for Sunday, 15 Nov, capture and save the following screenshots in this folder:
+### 1. Root Welcome Endpoint (`GET /`)
+> **URL:** `https://bdf-group-assi-1.onrender.com/`  
+> Confirms server is running with API directory links.
 
-### 1. The 3 Mandatory Twist Tests (Highest Priority)
-- **`01_twist_test_1_HAL-0001.png`**:  
-  Screenshot of Postman or browser showing `POST /halls` &rarr; `201 Created` with `"code": "HAL-0001"`.
-- **`02_twist_test_2_HAL-0002.png`**:  
-  Screenshot showing `POST /halls` &rarr; `201 Created` with `"code": "HAL-0002"`.
-- **`03_twist_test_3_code_preserved.png`**:  
-  Screenshot showing `PUT /halls/1` with a custom code &rarr; `200 OK` showing the code remained `"HAL-0001"` unchanged.
-
-### 2. Core API Endpoints
-- **`04_health_check.png`**:  
-  `GET /health` &rarr; `200 OK` (`status: "OK"`, uptime).
-- **`05_all_halls.png`**:  
-  `GET /halls` &rarr; `200 OK` listing the created seminar halls.
-- **`06_search_by_building.png`**:  
-  `GET /halls?building=Block%20A` &rarr; `200 OK` showing filtered results.
-- **`07_create_booking.png`**:  
-  `POST /bookings` &rarr; `201 Created` showing booking created with `organiser_id`, `hall_id`, and `booking_date`.
-- **`08_conflict_prevention_409.png`**:  
-  `POST /bookings` (same hall + same date) &rarr; `409 Conflict` with `"error": "Hall is already booked for this date"`.
-- **`09_join_booking_details.png`**:  
-  `GET /bookings/details` &rarr; `200 OK` showing SQL `INNER JOIN` results (booking ID, date, organiser name & email, hall name, code, building).
-
-### 3. Automated Test Suite Execution
-- **`10_npm_test_62_passed.png`**:  
-  Screenshot of your terminal running `npm test` showing all 5 test suites and 62 tests passing.
+![Root Welcome Endpoint](Screenshot%202026-11-14%20191110.png)
 
 ---
 
-## 🚀 How to Capture Screenshots Quickly
+### 2. Server Health Check (`GET /health`)
+> **URL:** `https://bdf-group-assi-1.onrender.com/health`  
+> Confirms system operational status, uptime, and timestamp.
 
-### Option A: Using the Evidence Report
-1. Double-click `screenshots/test_evidence_report.html` to open it in Chrome or Edge.
-2. Press `Win + Shift + S` (Windows Snipping Tool) to capture each card.
+![Health Check Endpoint](Screenshot%202026-11-14%20191155.png)
 
-### Option B: Using Postman
-1. Open Postman with `postman/EventSpark.postman_collection.json`.
-2. Click **Send** on each request.
-3. Capture the request URL, body, status code, and response preview.
+---
+
+### 3. Seminar Halls & Automatic Code Generation (`GET /halls`)
+> **URL:** `https://bdf-group-assi-1.onrender.com/halls`  
+> Verifies automatic server code assignment: **`HAL-0001`** and **`HAL-0002`**.
+
+![Seminar Halls Endpoint](Screenshot%202026-11-14%20192205.png)
+
+---
+
+### 4. Registered Organisers (`GET /organisers`)
+> **URL:** `https://bdf-group-assi-1.onrender.com/organisers`  
+> Displays registered club organisers with unique email validation.
+
+![Organisers Endpoint](Screenshot%202026-11-14%20192346.png)
+
+---
+
+### 5. Active Bookings (`GET /bookings`)
+> **URL:** `https://bdf-group-assi-1.onrender.com/bookings`  
+> Displays active hall bookings with foreign key links.
+
+![Bookings Endpoint](Screenshot%202026-11-14%20192313.png)
+
+---
+
+### 6. Mandatory SQL INNER JOIN Details (`GET /bookings/details`)
+> **URL:** `https://bdf-group-assi-1.onrender.com/bookings/details`  
+> Consolidates `bookings`, `organisers`, and `halls` via a single SQL query.
+
+![JOIN Booking Details Endpoint](Screenshot%202026-11-14%20192234.png)
+
+---
+
+## 📄 Additional Verification Files
+
+- **`test_evidence_report.html`**: Interactive HTML report detailing the 3 mandatory twist tests and conflict checks.
+- **`test_outputs.json`**: Raw JSON outputs from programmatic test runs.
