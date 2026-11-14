@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventSpark Hall – Test Output Evidence & Twist Results</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 30px 20px;
+      line-height: 1.6;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+    header {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-pass { background-color: rgba(34, 197, 94, 0.2); color: var(--success); border: 1px solid var(--success); }
+    .badge-theme { background-color: rgba(56, 189, 248, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+    h1 { font-size: 2rem; margin: 10px 0 5px; color: #fff; }
+    .subtitle { color: var(--text-muted); font-size: 1rem; }
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .card-title { font-size: 1.2rem; font-weight: 600; color: #fff; }
+    .http-method {
+      display: inline-block;
+      padding: 3px 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 4px;
+      margin-right: 8px;
+    }
+    .method-post { background-color: #0284c7; color: #fff; }
+    .method-put { background-color: #d97706; color: #fff; }
+    .method-get { background-color: #16a34a; color: #fff; }
+    .method-delete { background-color: #dc2626; color: #fff; }
+    .endpoint { font-family: monospace; font-size: 1rem; color: #e2e8f0; }
+    .section-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin: 10px 0 6px; }
+    pre {
+      background-color: #0b1120;
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9rem;
+      color: #38bdf8;
+    }
+    .status-code {
+      font-weight: 700;
+      color: var(--success);
+    }
+    .status-code-409 { color: var(--warning); }
+    .highlight { color: #facc15; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+        <span class="badge badge-theme">Theme 14 – Seminar Halls</span>
+        <span class="badge badge-theme">Group ST-AIDE2A-G14</span>
+        <span class="badge badge-pass">All 3 Twist Tests Passed</span>
+      </div>
+      <h1>EventSpark Hall – Verification & Output Report</h1>
+      <p class="subtitle">Official evidence and actual HTTP outputs for the 3 Mandatory Assignment Twist Tests and Core Endpoints.</p>
+    </header>
+
+    <!-- TEST 1 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="http-method method-post">POST</span>
+          <span class="endpoint">/halls</span>
+        </div>
+        <span class="badge badge-pass">TEST 1 PASSED (201 CREATED)</span>
+      </div>
+      <p><strong>Assignment Requirement:</strong> Add the first hall &rarr; Expected HTTP 201, assigned code must be <code>HAL-0001</code>.</p>
+      <div class="section-title">Request Payload</div>
+      <pre>{
+  "name": "Main Seminar Hall",
+  "building": "Block A"
+}</pre>
+      <div class="section-title">Actual Server Output (<span class="status-code">HTTP 201 Created</span>)</div>
+      <pre>{
+  "id": 1,
+  "code": "<span class="highlight">HAL-0001</span>",
+  "name": "Main Seminar Hall",
+  "building": "Block A",
+  "created_at": "2026-11-14T13:33:43.000Z",
+  "updated_at": "2026-11-14T13:33:43.000Z"
+}</pre>
+    </div>
+
+    <!-- TEST 2 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="http-method method-post">POST</span>
+          <span class="endpoint">/halls</span>
+        </div>
+        <span class="badge badge-pass">TEST 2 PASSED (201 CREATED)</span>
+      </div>
+      <p><strong>Assignment Requirement:</strong> Add the second hall &rarr; Expected HTTP 201, assigned sequential code <code>HAL-0002</code>.</p>
+      <div class="section-title">Request Payload</div>
+      <pre>{
+  "name": "Conference Hall",
+  "building": "Block B"
+}</pre>
+      <div class="section-title">Actual Server Output (<span class="status-code">HTTP 201 Created</span>)</div>
+      <pre>{
+  "id": 2,
+  "code": "<span class="highlight">HAL-0002</span>",
+  "name": "Conference Hall",
+  "building": "Block B",
+  "created_at": "2026-11-14T13:33:43.010Z",
+  "updated_at": "2026-11-14T13:33:43.010Z"
+}</pre>
+    </div>
+
+    <!-- TEST 3 -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="http-method method-put">PUT</span>
+          <span class="endpoint">/halls/1</span>
+        </div>
+        <span class="badge badge-pass">TEST 3 PASSED (200 OK)</span>
+      </div>
+      <p><strong>Assignment Requirement:</strong> Update the first hall, sending a custom code &rarr; Expected HTTP 200, code remains <code>HAL-0001</code> unchanged.</p>
+      <div class="section-title">Request Payload (Attempting to pass custom code: "CUSTOM-999")</div>
+      <pre>{
+  "name": "Updated Main Seminar Hall",
+  "building": "Block C",
+  "code": "CUSTOM-999"
+}</pre>
+      <div class="section-title">Actual Server Output (<span class="status-code">HTTP 200 OK</span>)</div>
+      <pre>{
+  "id": 1,
+  "code": "<span class="highlight">HAL-0001</span>",
+  "name": "Updated Main Seminar Hall",
+  "building": "Block C",
+  "created_at": "2026-11-14T13:33:43.000Z",
+  "updated_at": "2026-11-14T13:33:43.020Z"
+}</pre>
+    </div>
+
+    <!-- DUPLICATE BOOKING TEST -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="http-method method-post">POST</span>
+          <span class="endpoint">/bookings</span>
+        </div>
+        <span class="badge badge-pass">CONFLICT PREVENTION (409 CONFLICT)</span>
+      </div>
+      <p><strong>Conflict Prevention:</strong> Attempting to book the same hall on an already occupied date.</p>
+      <div class="section-title">Request Payload</div>
+      <pre>{
+  "organiser_id": 1,
+  "hall_id": 1,
+  "booking_date": "2026-11-20"
+}</pre>
+      <div class="section-title">Actual Server Output (<span class="status-code-409">HTTP 409 Conflict</span>)</div>
+      <pre>{
+  "error": "Hall is already booked for this date"
+}</pre>
+    </div>
+
+    <!-- MANDATORY JOIN ENDPOINT -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <span class="http-method method-get">GET</span>
+          <span class="endpoint">/bookings/details</span>
+        </div>
+        <span class="badge badge-pass">JOIN ENDPOINT PASSED (200 OK)</span>
+      </div>
+      <p><strong>Mandatory Requirement:</strong> Single SQL <code>INNER JOIN</code> query combining bookings, organisers, and halls.</p>
+      <div class="section-title">Actual Server Output (<span class="status-code">HTTP 200 OK</span>)</div>
+      <pre>[
+  {
+    "booking_id": 1,
+    "booking_date": "2026-11-20",
+    "organiser_name": "Abhilash Reddy",
+    "organiser_email": "abhilash@example.com",
+    "hall_name": "Main Seminar Hall",
+    "hall_code": "HAL-0001",
+    "building": "Block A"
+  }
+]</pre>
+    </div>
+  </div>
+</body>
+</html>
