@@ -1,0 +1,945 @@
+const fs = require('fs');
+const path = require('path');
+
+const collection = {
+  info: {
+    _postman_id: "7f8b9e6a-c512-4d33-91ab-e0d19561b34e",
+    name: "EventSpark Hall API",
+    description: "Official, production-grade Postman Collection for EventSpark Hall – Seminar Hall Booking Management System.\nAssignment: Backend Development Fundamentals (BDF)\nTheme: 14 – Seminar Halls\nGroup ID: ST-AIDE2A-G14\nBase URL: http://localhost:3000 (Development) or https://bdf-group-assi.onrender.com (Production)",
+    schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  variable: [
+    {
+      key: "baseUrl",
+      value: "http://localhost:3000",
+      type: "string"
+    },
+    {
+      key: "hallId",
+      value: "1",
+      type: "string"
+    },
+    {
+      key: "secondHallId",
+      value: "2",
+      type: "string"
+    },
+    {
+      key: "organiserId",
+      value: "1",
+      type: "string"
+    },
+    {
+      key: "bookingId",
+      value: "1",
+      type: "string"
+    },
+    {
+      key: "bookingDate",
+      value: "2027-02-15",
+      type: "string"
+    },
+    {
+      key: "twistHall1Id",
+      value: "1",
+      type: "string"
+    },
+    {
+      key: "twistCode",
+      value: "HAL-0001",
+      type: "string"
+    }
+  ],
+  item: [
+    {
+      name: "1. Health Check",
+      item: [
+        {
+          name: "TC01 – Server Health Status",
+          request: {
+            method: "GET",
+            header: [{ key: "Accept", value: "application/json" }],
+            url: {
+              raw: "{{baseUrl}}/health",
+              host: ["{{baseUrl}}"],
+              path: ["health"]
+            },
+            description: "Checks server operational status, uptime, and timestamp."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response has status OK', function () {",
+                  "    var json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('OK');",
+                  "    pm.expect(json).to.have.property('uptime');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "2. Organisers",
+      item: [
+        {
+          name: "TC02 – Create Organiser",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                name: "Postman Demo Organiser",
+                email: "postman.organiser.{{$timestamp}}@example.com"
+              }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/organisers",
+              host: ["{{baseUrl}}"],
+              path: ["organisers"]
+            },
+            description: "Registers a new event organiser and saves organiserId to collection variables."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Organiser created with ID', function () {",
+                  "    pm.expect(json).to.have.property('id');",
+                  "    pm.collectionVariables.set('organiserId', json.id.toString());",
+                  "    pm.collectionVariables.set('orgEmail', json.email);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC03 – Get All Organisers",
+          request: {
+            method: "GET",
+            header: [{ key: "Accept", value: "application/json" }],
+            url: {
+              raw: "{{baseUrl}}/organisers",
+              host: ["{{baseUrl}}"],
+              path: ["organisers"]
+            },
+            description: "Retrieves list of all registered organisers."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response is an array', function () {",
+                  "    pm.expect(Array.isArray(pm.response.json())).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "3. Halls",
+      item: [
+        {
+          name: "TC04 – Create First Hall",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                name: "Main Seminar Hall",
+                building: "Block A"
+              }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/halls",
+              host: ["{{baseUrl}}"],
+              path: ["halls"]
+            },
+            description: "Creates first hall and saves hallId and code to collection variables."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Hall code follows HAL-xxxx format', function () {",
+                  "    pm.expect(json.code).to.match(/^HAL-\\d{4,}$/);",
+                  "    pm.collectionVariables.set('hallId', json.id.toString());",
+                  "    pm.collectionVariables.set('firstHallCode', json.code);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC05 – Create Second Hall",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                name: "Conference Hall",
+                building: "Block B"
+              }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/halls",
+              host: ["{{baseUrl}}"],
+              path: ["halls"]
+            },
+            description: "Creates second hall and verifies sequential code generation."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Sequential code generated', function () {",
+                  "    pm.expect(json.code).to.match(/^HAL-\\d{4,}$/);",
+                  "    pm.collectionVariables.set('secondHallId', json.id.toString());",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC06 – Get All Halls",
+          request: {
+            method: "GET",
+            header: [{ key: "Accept", value: "application/json" }],
+            url: {
+              raw: "{{baseUrl}}/halls",
+              host: ["{{baseUrl}}"],
+              path: ["halls"]
+            },
+            description: "Retrieves an array of all seminar halls."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response is an array of halls', function () {",
+                  "    pm.expect(Array.isArray(pm.response.json())).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC08 – Get Hall by ID",
+          request: {
+            method: "GET",
+            header: [{ key: "Accept", value: "application/json" }],
+            url: {
+              raw: "{{baseUrl}}/halls/{{hallId}}",
+              host: ["{{baseUrl}}"],
+              path: ["halls", "{{hallId}}"]
+            },
+            description: "Retrieves a single seminar hall by ID."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Returned hall matches requested ID', function () {",
+                  "    pm.expect(json.id.toString()).to.eql(pm.collectionVariables.get('hallId'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC09 – Update Hall Details",
+          request: {
+            method: "PUT",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                name: "Updated Main Seminar Hall",
+                building: "Block C"
+              }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/halls/{{hallId}}",
+              host: ["{{baseUrl}}"],
+              path: ["halls", "{{hallId}}"]
+            },
+            description: "Updates hall details and verifies code immutability."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Hall name and building updated', function () {",
+                  "    pm.expect(json.name).to.eql('Updated Main Seminar Hall');",
+                  "    pm.expect(json.building).to.eql('Block C');",
+                  "});",
+                  "pm.test('Hall code remained immutable', function () {",
+                  "    pm.expect(json.code).to.eql(pm.collectionVariables.get('firstHallCode'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "4. Bookings",
+      item: [
+        {
+          name: "TC10 – Create Booking",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: "{\n  \"organiser_id\": {{organiserId}},\n  \"hall_id\": {{hallId}},\n  \"booking_date\": \"{{bookingDate}}\"\n}"
+            },
+            url: {
+              raw: "{{baseUrl}}/bookings",
+              host: ["{{baseUrl}}"],
+              path: ["bookings"]
+            },
+            description: "Books a seminar hall for an organiser on a specified date."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Booking created successfully', function () {",
+                  "    pm.expect(json).to.have.property('id');",
+                  "    pm.collectionVariables.set('bookingId', json.id.toString());",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC11 – Get All Bookings",
+          request: {
+            method: "GET",
+            header: [{ key: "Accept", value: "application/json" }],
+            url: {
+              raw: "{{baseUrl}}/bookings",
+              host: ["{{baseUrl}}"],
+              path: ["bookings"]
+            },
+            description: "Retrieves list of all active reservations."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response is an array of bookings', function () {",
+                  "    pm.expect(Array.isArray(pm.response.json())).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "5. Booking JOIN",
+      item: [
+        {
+          name: "TC12 – Get Joined Booking Details (INNER JOIN)",
+          request: {
+            method: "GET",
+            header: [{ key: "Accept", value: "application/json" }],
+            url: {
+              raw: "{{baseUrl}}/bookings/details",
+              host: ["{{baseUrl}}"],
+              path: ["bookings", "details"]
+            },
+            description: "Mandatory multi-table JOIN endpoint aggregating bookings, organisers, and halls."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var list = pm.response.json();",
+                  "pm.test('Response contains joined details with required fields', function () {",
+                  "    pm.expect(Array.isArray(list)).to.be.true;",
+                  "    pm.expect(list.length).to.be.greaterThan(0);",
+                  "    var item = list[0];",
+                  "    pm.expect(item).to.have.property('booking_id');",
+                  "    pm.expect(item).to.have.property('booking_date');",
+                  "    pm.expect(item).to.have.property('organiser_name');",
+                  "    pm.expect(item).to.have.property('organiser_email');",
+                  "    pm.expect(item).to.have.property('hall_name');",
+                  "    pm.expect(item).to.have.property('hall_code');",
+                  "    pm.expect(item).to.have.property('building');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "6. Search",
+      item: [
+        {
+          name: "TC07 – Search Halls by Building",
+          request: {
+            method: "GET",
+            header: [{ key: "Accept", value: "application/json" }],
+            url: {
+              raw: "{{baseUrl}}/halls?building=Block A",
+              host: ["{{baseUrl}}"],
+              path: ["halls"],
+              query: [{ key: "building", value: "Block A" }]
+            },
+            description: "Searches halls filtering by building name (case-insensitive)."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var list = pm.response.json();",
+                  "pm.test('All returned halls are in Block A', function () {",
+                  "    pm.expect(Array.isArray(list)).to.be.true;",
+                  "    list.forEach(function(h) {",
+                  "        pm.expect(h.building.toLowerCase()).to.eql('block a');",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "7. Validation Tests",
+      item: [
+        {
+          name: "TC13 – Missing Hall Name (Expect 400)",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({ building: "Block A" }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/halls",
+              host: ["{{baseUrl}}"],
+              path: ["halls"]
+            },
+            description: "Validation check: rejects request with 400 when name is omitted."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Error indicates missing hall name', function () {",
+                  "    pm.expect(pm.response.json().error).to.eql('Hall name is required');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC14 – Invalid Organiser Email (Expect 400)",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({ name: "Test User", email: "invalid-email" }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/organisers",
+              host: ["{{baseUrl}}"],
+              path: ["organisers"]
+            },
+            description: "Validation check: rejects malformed email strings with 400."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Error indicates invalid email format', function () {",
+                  "    pm.expect(pm.response.json().error).to.include('email');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC15 – Resource Not Found (Expect 404)",
+          request: {
+            method: "GET",
+            header: [{ key: "Accept", value: "application/json" }],
+            url: {
+              raw: "{{baseUrl}}/halls/999999",
+              host: ["{{baseUrl}}"],
+              path: ["halls", "999999"]
+            },
+            description: "Verifies 404 response on targeting a non-existent hall ID."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 404 Not Found', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test('Error indicates hall not found', function () {",
+                  "    pm.expect(pm.response.json().error).to.eql('Hall not found');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC16 – Duplicate Organiser Email (Expect 409)",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: "{\n  \"name\": \"Second Organiser\",\n  \"email\": \"{{orgEmail}}\"\n}"
+            },
+            url: {
+              raw: "{{baseUrl}}/organisers",
+              host: ["{{baseUrl}}"],
+              path: ["organisers"]
+            },
+            description: "Verifies unique constraint rejection on duplicate organiser email."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 409 Conflict', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "pm.test('Conflict specifies email already registered', function () {",
+                  "    pm.expect(pm.response.json().error).to.include('already exists');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC17 – Duplicate Booking Date Conflict (Expect 409)",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: "{\n  \"organiser_id\": {{organiserId}},\n  \"hall_id\": {{hallId}},\n  \"booking_date\": \"{{bookingDate}}\"\n}"
+            },
+            url: {
+              raw: "{{baseUrl}}/bookings",
+              host: ["{{baseUrl}}"],
+              path: ["bookings"]
+            },
+            description: "Double-booking prevention: rejects duplicate date booking on the same hall."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 409 Conflict', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "pm.test('Conflict indicates hall already booked', function () {",
+                  "    pm.expect(pm.response.json().error).to.eql('Hall is already booked for this date');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC18 – Invalid Booking Foreign Key (Expect 404)",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: "{\n  \"organiser_id\": 999999,\n  \"hall_id\": {{hallId}},\n  \"booking_date\": \"2028-12-31\"\n}"
+            },
+            url: {
+              raw: "{{baseUrl}}/bookings",
+              host: ["{{baseUrl}}"],
+              path: ["bookings"]
+            },
+            description: "Verifies foreign key existence check rejects booking with invalid organiser."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 404 Not Found', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "pm.test('Error indicates organiser not found', function () {",
+                  "    pm.expect(pm.response.json().error).to.eql('Organiser not found');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      name: "8. Automatic Code Tests",
+      item: [
+        {
+          name: "TC19 – Twist 1: Create First Hall (HAL-xxxx)",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                name: "Twist Hall Alpha",
+                building: "Block E"
+              }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/halls",
+              host: ["{{baseUrl}}"],
+              path: ["halls"]
+            },
+            description: "Twist Test 1: First hall creation returns sequential HAL code."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Hall code follows HAL-xxxx format', function () {",
+                  "    pm.expect(json.code).to.match(/^HAL-\\d{4,}$/);",
+                  "    pm.collectionVariables.set('twistHall1Id', json.id.toString());",
+                  "    pm.collectionVariables.set('twistCode', json.code);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC20 – Twist 2: Create Second Hall Next Sequential",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                name: "Twist Hall Beta",
+                building: "Block F"
+              }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/halls",
+              host: ["{{baseUrl}}"],
+              path: ["halls"]
+            },
+            description: "Twist Test 2: Second hall creation returns sequentially incremented code."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Code is sequentially incremented', function () {",
+                  "    pm.expect(json.code).to.match(/^HAL-\\d{4,}$/);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC21 – Twist 3: Update First Hall Preserves Code",
+          request: {
+            method: "PUT",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                name: "Twist Hall Alpha Renamed",
+                building: "Block E"
+              }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/halls/{{twistHall1Id}}",
+              host: ["{{baseUrl}}"],
+              path: ["halls", "{{twistHall1Id}}"]
+            },
+            description: "Twist Test 3: Updating name & building preserves original HAL code."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Name updated and code preserved', function () {",
+                  "    pm.expect(json.name).to.eql('Twist Hall Alpha Renamed');",
+                  "    pm.expect(json.code).to.eql(pm.collectionVariables.get('twistCode'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC22 – Custom Code Override Protection (POST)",
+          request: {
+            method: "POST",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                name: "Tamper Attack Hall",
+                building: "Block G",
+                code: "HACKED-CODE-999"
+              }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/halls",
+              host: ["{{baseUrl}}"],
+              path: ["halls"]
+            },
+            description: "Security check: Server ignores client supplied custom code and generates its own."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Server generated code overrides custom code', function () {",
+                  "    pm.expect(json.code).to.not.eql('HACKED-CODE-999');",
+                  "    pm.expect(json.code).to.match(/^HAL-\\d{4,}$/);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          name: "TC23 – Code Tamper Protection (PUT)",
+          request: {
+            method: "PUT",
+            header: [
+              { key: "Content-Type", value: "application/json" },
+              { key: "Accept", value: "application/json" }
+            ],
+            body: {
+              mode: "raw",
+              raw: JSON.stringify({
+                name: "Twist Hall Alpha Final",
+                building: "Block E",
+                code: "CUSTOM-OVERRIDE"
+              }, null, 2)
+            },
+            url: {
+              raw: "{{baseUrl}}/halls/{{twistHall1Id}}",
+              host: ["{{baseUrl}}"],
+              path: ["halls", "{{twistHall1Id}}"]
+            },
+            description: "Security check: PUT cannot alter existing hall code even if passed in body."
+          },
+          event: [
+            {
+              listen: "test",
+              script: {
+                type: "text/javascript",
+                exec: [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var json = pm.response.json();",
+                  "pm.test('Hall code remains completely immutable', function () {",
+                  "    pm.expect(json.code).to.eql(pm.collectionVariables.get('twistCode'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+fs.writeFileSync(
+  path.join(__dirname, '../postman/EventSpark.postman_collection.json'),
+  JSON.stringify(collection, null, 2),
+  'utf8'
+);
+console.log('Successfully updated postman/EventSpark.postman_collection.json');

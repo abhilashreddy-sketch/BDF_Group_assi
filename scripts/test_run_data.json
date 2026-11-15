@@ -1,0 +1,844 @@
+[
+  {
+    "tcId": "TC01",
+    "name": "Server Health Status",
+    "method": "GET",
+    "endpoint": "/health",
+    "url": "{{baseUrl}}/health",
+    "status": 200,
+    "statusText": "OK",
+    "time": 142,
+    "size": 261,
+    "reqBody": null,
+    "resBody": {
+      "status": "OK",
+      "service": "EventSpark Hall Backend",
+      "timestamp": "2026-11-15T12:49:42.142Z",
+      "uptime": 153.6059234
+    },
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "Response has status OK",
+        "passed": true
+      },
+      {
+        "name": "Uptime is reported",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC02",
+    "name": "Create Organiser",
+    "method": "POST",
+    "endpoint": "/organisers",
+    "url": "{{baseUrl}}/organisers",
+    "status": 201,
+    "statusText": "Created",
+    "time": 31,
+    "size": 279,
+    "reqBody": {
+      "name": "Postman Demo Organiser",
+      "email": "postman.demo.1794746982173@example.com"
+    },
+    "resBody": {
+      "id": 2,
+      "name": "Postman Demo Organiser",
+      "email": "postman.demo.1794746982173@example.com",
+      "created_at": "2026-11-15T12:49:42.179Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 201 Created",
+        "passed": true
+      },
+      {
+        "name": "Organiser created with ID",
+        "passed": true
+      },
+      {
+        "name": "Email matches request",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC03",
+    "name": "Get All Organisers",
+    "method": "GET",
+    "endpoint": "/organisers",
+    "url": "{{baseUrl}}/organisers",
+    "status": 200,
+    "statusText": "OK",
+    "time": 7,
+    "size": 400,
+    "reqBody": null,
+    "resBody": [
+      {
+        "id": 1,
+        "name": "Abhilash Reddy (Lead)",
+        "email": "abhilash.updated@example.com",
+        "created_at": "2026-11-14T13:33:43.854Z"
+      },
+      {
+        "id": 2,
+        "name": "Postman Demo Organiser",
+        "email": "postman.demo.1794746982173@example.com",
+        "created_at": "2026-11-15T12:49:42.179Z"
+      }
+    ],
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "Response is an array",
+        "passed": true
+      },
+      {
+        "name": "Created organiser is present",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC04",
+    "name": "Create First Hall",
+    "method": "POST",
+    "endpoint": "/halls",
+    "url": "{{baseUrl}}/halls",
+    "status": 201,
+    "statusText": "Created",
+    "time": 22,
+    "size": 304,
+    "reqBody": {
+      "name": "Main Seminar Hall",
+      "building": "Block A"
+    },
+    "resBody": {
+      "id": 7,
+      "code": "HAL-0007",
+      "name": "Main Seminar Hall",
+      "building": "Block A",
+      "created_at": "2026-11-15T12:49:42.216Z",
+      "updated_at": "2026-11-15T12:49:42.216Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 201 Created",
+        "passed": true
+      },
+      {
+        "name": "Hall created with ID",
+        "passed": true
+      },
+      {
+        "name": "Code follows HAL-xxxx format",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC05",
+    "name": "Create Second Hall",
+    "method": "POST",
+    "endpoint": "/halls",
+    "url": "{{baseUrl}}/halls",
+    "status": 201,
+    "statusText": "Created",
+    "time": 20,
+    "size": 302,
+    "reqBody": {
+      "name": "Conference Hall",
+      "building": "Block B"
+    },
+    "resBody": {
+      "id": 8,
+      "code": "HAL-0008",
+      "name": "Conference Hall",
+      "building": "Block B",
+      "created_at": "2026-11-15T12:49:42.237Z",
+      "updated_at": "2026-11-15T12:49:42.237Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 201 Created",
+        "passed": true
+      },
+      {
+        "name": "Sequential code generated",
+        "passed": true
+      },
+      {
+        "name": "Building is Block B",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC06",
+    "name": "Get All Halls",
+    "method": "GET",
+    "endpoint": "/halls",
+    "url": "{{baseUrl}}/halls",
+    "status": 200,
+    "statusText": "OK",
+    "time": 5,
+    "size": 1228,
+    "reqBody": null,
+    "resBody": [
+      {
+        "id": 1,
+        "code": "HAL-0001",
+        "name": "Updated Main Hall",
+        "building": "Block C",
+        "created_at": "2026-11-14T13:33:43.805Z",
+        "updated_at": "2026-11-15T12:47:47.733Z"
+      },
+      {
+        "id": 2,
+        "code": "HAL-0002",
+        "name": "Conference Hall",
+        "building": "Block B",
+        "created_at": "2026-11-14T13:33:43.829Z",
+        "updated_at": "2026-11-14T13:33:43.829Z"
+      },
+      {
+        "id": 4,
+        "code": "HAL-0004",
+        "name": "Main Hall",
+        "building": "Block A",
+        "created_at": "2026-11-15T12:47:47.586Z",
+        "updated_at": "2026-11-15T12:47:47.586Z"
+      },
+      {
+        "id": 5,
+        "code": "HAL-0005",
+        "name": "Conference Hall",
+        "building": "Block B",
+        "created_at": "2026-11-15T12:47:47.668Z",
+        "updated_at": "2026-11-15T12:47:47.668Z"
+      },
+      {
+        "id": 6,
+        "code": "HAL-0006",
+        "name": "Custom Code Attack Hall",
+        "building": "Block D",
+        "created_at": "2026-11-15T12:47:47.819Z",
+        "updated_at": "2026-11-15T12:47:47.819Z"
+      },
+      {
+        "id": 7,
+        "code": "HAL-0007",
+        "name": "Main Seminar Hall",
+        "building": "Block A",
+        "created_at": "2026-11-15T12:49:42.216Z",
+        "updated_at": "2026-11-15T12:49:42.216Z"
+      },
+      {
+        "id": 8,
+        "code": "HAL-0008",
+        "name": "Conference Hall",
+        "building": "Block B",
+        "created_at": "2026-11-15T12:49:42.237Z",
+        "updated_at": "2026-11-15T12:49:42.237Z"
+      }
+    ],
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "Response is an array of halls",
+        "passed": true
+      },
+      {
+        "name": "All halls have code and building",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC07",
+    "name": "Search Halls by Building",
+    "method": "GET",
+    "endpoint": "/halls?building=Block%20A",
+    "url": "{{baseUrl}}/halls?building=Block%20A",
+    "status": 200,
+    "statusText": "OK",
+    "time": 5,
+    "size": 453,
+    "reqBody": null,
+    "resBody": [
+      {
+        "id": 4,
+        "code": "HAL-0004",
+        "name": "Main Hall",
+        "building": "Block A",
+        "created_at": "2026-11-15T12:47:47.586Z",
+        "updated_at": "2026-11-15T12:47:47.586Z"
+      },
+      {
+        "id": 7,
+        "code": "HAL-0007",
+        "name": "Main Seminar Hall",
+        "building": "Block A",
+        "created_at": "2026-11-15T12:49:42.216Z",
+        "updated_at": "2026-11-15T12:49:42.216Z"
+      }
+    ],
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "All returned halls in Block A",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC08",
+    "name": "Get Hall by ID",
+    "method": "GET",
+    "endpoint": "/halls/7",
+    "url": "{{baseUrl}}/halls/7",
+    "status": 200,
+    "statusText": "OK",
+    "time": 5,
+    "size": 304,
+    "reqBody": null,
+    "resBody": {
+      "id": 7,
+      "code": "HAL-0007",
+      "name": "Main Seminar Hall",
+      "building": "Block A",
+      "created_at": "2026-11-15T12:49:42.216Z",
+      "updated_at": "2026-11-15T12:49:42.216Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "Returned hall matches requested ID",
+        "passed": true
+      },
+      {
+        "name": "Hall code matches original code",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC09",
+    "name": "Update Hall Details",
+    "method": "PUT",
+    "endpoint": "/halls/7",
+    "url": "{{baseUrl}}/halls/7",
+    "status": 200,
+    "statusText": "OK",
+    "time": 21,
+    "size": 312,
+    "reqBody": {
+      "name": "Updated Main Seminar Hall",
+      "building": "Block C"
+    },
+    "resBody": {
+      "id": 7,
+      "code": "HAL-0007",
+      "name": "Updated Main Seminar Hall",
+      "building": "Block C",
+      "created_at": "2026-11-15T12:49:42.216Z",
+      "updated_at": "2026-11-15T12:49:42.273Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "Hall name updated",
+        "passed": true
+      },
+      {
+        "name": "Building updated to Block C",
+        "passed": true
+      },
+      {
+        "name": "Hall code remains unchanged",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC10",
+    "name": "Create Booking",
+    "method": "POST",
+    "endpoint": "/bookings",
+    "url": "{{baseUrl}}/bookings",
+    "status": 201,
+    "statusText": "Created",
+    "time": 15,
+    "size": 255,
+    "reqBody": {
+      "organiser_id": 2,
+      "hall_id": 7,
+      "booking_date": "2027-02-14"
+    },
+    "resBody": {
+      "id": 3,
+      "organiser_id": 2,
+      "hall_id": 7,
+      "booking_date": "2027-02-14",
+      "created_at": "2026-11-15T12:49:42.294Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 201 Created",
+        "passed": true
+      },
+      {
+        "name": "Booking ID assigned",
+        "passed": true
+      },
+      {
+        "name": "Booking date confirmed",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC11",
+    "name": "Get All Bookings",
+    "method": "GET",
+    "endpoint": "/bookings",
+    "url": "{{baseUrl}}/bookings",
+    "status": 200,
+    "statusText": "OK",
+    "time": 3,
+    "size": 363,
+    "reqBody": null,
+    "resBody": [
+      {
+        "id": 2,
+        "organiser_id": 1,
+        "hall_id": 1,
+        "booking_date": "2026-11-20",
+        "created_at": "2026-11-15T12:47:48.057Z"
+      },
+      {
+        "id": 3,
+        "organiser_id": 2,
+        "hall_id": 7,
+        "booking_date": "2027-02-14",
+        "created_at": "2026-11-15T12:49:42.294Z"
+      }
+    ],
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "Response is an array",
+        "passed": true
+      },
+      {
+        "name": "Created booking is listed",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC12",
+    "name": "Get Joined Booking Details (INNER JOIN)",
+    "method": "GET",
+    "endpoint": "/bookings/details",
+    "url": "{{baseUrl}}/bookings/details",
+    "status": 200,
+    "statusText": "OK",
+    "time": 3,
+    "size": 592,
+    "reqBody": null,
+    "resBody": [
+      {
+        "booking_id": 2,
+        "booking_date": "2026-11-20",
+        "organiser_name": "Abhilash Reddy (Lead)",
+        "organiser_email": "abhilash.updated@example.com",
+        "hall_name": "Updated Main Hall",
+        "hall_code": "HAL-0001",
+        "building": "Block C"
+      },
+      {
+        "booking_id": 3,
+        "booking_date": "2027-02-14",
+        "organiser_name": "Postman Demo Organiser",
+        "organiser_email": "postman.demo.1794746982173@example.com",
+        "hall_name": "Updated Main Seminar Hall",
+        "hall_code": "HAL-0007",
+        "building": "Block C"
+      }
+    ],
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "Contains joined organiser details",
+        "passed": true
+      },
+      {
+        "name": "Contains joined hall code & building",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC13",
+    "name": "Validation Error - Missing Hall Name",
+    "method": "POST",
+    "endpoint": "/halls",
+    "url": "{{baseUrl}}/halls",
+    "status": 400,
+    "statusText": "Bad Request",
+    "time": 3,
+    "size": 183,
+    "reqBody": {
+      "building": "Block A"
+    },
+    "resBody": {
+      "error": "Hall name is required"
+    },
+    "tests": [
+      {
+        "name": "Status code is 400 Bad Request",
+        "passed": true
+      },
+      {
+        "name": "Error specifies missing name",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC14",
+    "name": "Validation Error - Invalid Email Format",
+    "method": "POST",
+    "endpoint": "/organisers",
+    "url": "{{baseUrl}}/organisers",
+    "status": 400,
+    "statusText": "Bad Request",
+    "time": 3,
+    "size": 182,
+    "reqBody": {
+      "name": "Test User",
+      "email": "invalid-email"
+    },
+    "resBody": {
+      "error": "Invalid email format"
+    },
+    "tests": [
+      {
+        "name": "Status code is 400 Bad Request",
+        "passed": true
+      },
+      {
+        "name": "Error specifies invalid email",
+        "passed": false
+      }
+    ]
+  },
+  {
+    "tcId": "TC15",
+    "name": "Resource Not Found - Nonexistent Hall",
+    "method": "GET",
+    "endpoint": "/halls/999999",
+    "url": "{{baseUrl}}/halls/999999",
+    "status": 404,
+    "statusText": "Not Found",
+    "time": 3,
+    "size": 176,
+    "reqBody": null,
+    "resBody": {
+      "error": "Hall not found"
+    },
+    "tests": [
+      {
+        "name": "Status code is 404 Not Found",
+        "passed": true
+      },
+      {
+        "name": "Error indicates hall not found",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC16",
+    "name": "Duplicate Organiser Email Conflict",
+    "method": "POST",
+    "endpoint": "/organisers",
+    "url": "{{baseUrl}}/organisers",
+    "status": 409,
+    "statusText": "Conflict",
+    "time": 4,
+    "size": 205,
+    "reqBody": {
+      "name": "Second Organiser",
+      "email": "postman.demo.1794746982173@example.com"
+    },
+    "resBody": {
+      "error": "An organiser with this email already exists"
+    },
+    "tests": [
+      {
+        "name": "Status code is 409 Conflict",
+        "passed": true
+      },
+      {
+        "name": "Conflict error returned",
+        "passed": false
+      }
+    ]
+  },
+  {
+    "tcId": "TC17",
+    "name": "Duplicate Booking Date Conflict",
+    "method": "POST",
+    "endpoint": "/bookings",
+    "url": "{{baseUrl}}/bookings",
+    "status": 409,
+    "statusText": "Conflict",
+    "time": 5,
+    "size": 198,
+    "reqBody": {
+      "organiser_id": 2,
+      "hall_id": 7,
+      "booking_date": "2027-02-14"
+    },
+    "resBody": {
+      "error": "Hall is already booked for this date"
+    },
+    "tests": [
+      {
+        "name": "Status code is 409 Conflict",
+        "passed": true
+      },
+      {
+        "name": "Conflict indicates hall already booked",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC18",
+    "name": "Invalid Booking Foreign Key",
+    "method": "POST",
+    "endpoint": "/bookings",
+    "url": "{{baseUrl}}/bookings",
+    "status": 404,
+    "statusText": "Not Found",
+    "time": 5,
+    "size": 181,
+    "reqBody": {
+      "organiser_id": 999999,
+      "hall_id": 7,
+      "booking_date": "2028-05-10"
+    },
+    "resBody": {
+      "error": "Organiser not found"
+    },
+    "tests": [
+      {
+        "name": "Status code is 404 Not Found",
+        "passed": true
+      },
+      {
+        "name": "Foreign key error handled gracefully",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC19",
+    "name": "Twist 1 - First Hall Auto Code",
+    "method": "POST",
+    "endpoint": "/halls",
+    "url": "{{baseUrl}}/halls",
+    "status": 201,
+    "statusText": "Created",
+    "time": 14,
+    "size": 303,
+    "reqBody": {
+      "name": "Twist Hall Alpha",
+      "building": "Block E"
+    },
+    "resBody": {
+      "id": 9,
+      "code": "HAL-0009",
+      "name": "Twist Hall Alpha",
+      "building": "Block E",
+      "created_at": "2026-11-15T12:49:42.347Z",
+      "updated_at": "2026-11-15T12:49:42.347Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 201 Created",
+        "passed": true
+      },
+      {
+        "name": "Assigned sequential HAL code",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC20",
+    "name": "Twist 2 - Second Hall Next Sequential Code",
+    "method": "POST",
+    "endpoint": "/halls",
+    "url": "{{baseUrl}}/halls",
+    "status": 201,
+    "statusText": "Created",
+    "time": 14,
+    "size": 303,
+    "reqBody": {
+      "name": "Twist Hall Beta",
+      "building": "Block F"
+    },
+    "resBody": {
+      "id": 10,
+      "code": "HAL-0010",
+      "name": "Twist Hall Beta",
+      "building": "Block F",
+      "created_at": "2026-11-15T12:49:42.360Z",
+      "updated_at": "2026-11-15T12:49:42.360Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 201 Created",
+        "passed": true
+      },
+      {
+        "name": "Sequential code greater than first hall",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC21",
+    "name": "Twist 3 - Update Hall Preserves Code",
+    "method": "PUT",
+    "endpoint": "/halls/9",
+    "url": "{{baseUrl}}/halls/9",
+    "status": 200,
+    "statusText": "OK",
+    "time": 18,
+    "size": 311,
+    "reqBody": {
+      "name": "Twist Hall Alpha Renamed",
+      "building": "Block E"
+    },
+    "resBody": {
+      "id": 9,
+      "code": "HAL-0009",
+      "name": "Twist Hall Alpha Renamed",
+      "building": "Block E",
+      "created_at": "2026-11-15T12:49:42.347Z",
+      "updated_at": "2026-11-15T12:49:42.374Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "Name updated successfully",
+        "passed": true
+      },
+      {
+        "name": "Hall code preserved strictly",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC22",
+    "name": "Security - Client Custom Code Ignored",
+    "method": "POST",
+    "endpoint": "/halls",
+    "url": "{{baseUrl}}/halls",
+    "status": 201,
+    "statusText": "Created",
+    "time": 16,
+    "size": 306,
+    "reqBody": {
+      "name": "Tamper Attack Hall",
+      "building": "Block G",
+      "code": "HACKED-CODE-999"
+    },
+    "resBody": {
+      "id": 11,
+      "code": "HAL-0011",
+      "name": "Tamper Attack Hall",
+      "building": "Block G",
+      "created_at": "2026-11-15T12:49:42.396Z",
+      "updated_at": "2026-11-15T12:49:42.396Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 201 Created",
+        "passed": true
+      },
+      {
+        "name": "Server generated code overrides custom code",
+        "passed": true
+      }
+    ]
+  },
+  {
+    "tcId": "TC23",
+    "name": "Security - PUT Code Tamper Ignored",
+    "method": "PUT",
+    "endpoint": "/halls/9",
+    "url": "{{baseUrl}}/halls/9",
+    "status": 200,
+    "statusText": "OK",
+    "time": 19,
+    "size": 317,
+    "reqBody": {
+      "name": "Twist Hall Alpha Renamed Again",
+      "building": "Block E",
+      "code": "CUSTOM-OVERRIDE"
+    },
+    "resBody": {
+      "id": 9,
+      "code": "HAL-0009",
+      "name": "Twist Hall Alpha Renamed Again",
+      "building": "Block E",
+      "created_at": "2026-11-15T12:49:42.347Z",
+      "updated_at": "2026-11-15T12:49:42.409Z"
+    },
+    "tests": [
+      {
+        "name": "Status code is 200",
+        "passed": true
+      },
+      {
+        "name": "Hall code remains original",
+        "passed": true
+      }
+    ]
+  }
+]
